@@ -2,30 +2,26 @@ const ctrl = {};
 const ExcelJS = require('exceljs');
 const path = require('path');
 
-ctrl.index = async (req, res) => {
+ctrl.index = (req, res) => {
+    const ExcelJS = require('exceljs');
     const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'Iggnaxios Hansen';
     const sheet = workbook.addWorksheet('My Sheet');
-    sheet.addRow({ id: 1, name: 'John Doe', dob: new Date(1970, 1, 1) });
-    // add column headers
+
     sheet.columns = [
-        { header: 'Package', key: 'package_name' },
-        { header: 'Author', key: 'author_name' }
+        { header: 'Id', key: 'id', width: 10 },
+        { header: 'Name', key: 'name', width: 32 },
+        { header: 'D.O.B.', key: 'dob', width: 10 }
     ];
 
-    // save workbook to disk
-    workbook
-        .xlsx
-        .writeFile('Informe.xlsx')
-        .then(() => {
-            console.log("saved");
-        })
-        .catch((err) => {
-            console.log("err", err);
-        });
+    sheet.addRow({ id: 1, name: 'John Doe', dob: new Date(1970, 1, 1) });
+    const fileName = "Informe2.xlsx";
+    workbook.xlsx.writeFile(fileName).then(() => {
+        console.warn(" waaa ok");
+    });
 
-    const pathFile = path.join(__dirname, '../../Informe.xlsx');
-    res.download(pathFile);
-    //res.send("oh yeah controller");
+    res.send("almost excel");
+
 };
 
 module.exports = ctrl;
