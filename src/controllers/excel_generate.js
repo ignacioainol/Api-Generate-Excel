@@ -4,31 +4,35 @@ const path = require('path');
 const dataQuery = require('../models/query');
 
 ctrl.index = (req, res) => {
-    const workbook = new ExcelJS.Workbook();
-    workbook.creator = 'Iggnaxios Hansen';
-    const sheet = workbook.addWorksheet('My Sheet');
+    try {
+        const workbook = new ExcelJS.Workbook();
+        workbook.creator = 'Iggnaxios Hansen';
+        const sheet = workbook.addWorksheet('My Sheet');
 
-    sheet.columns = [
-        { header: 'Nombre Fondo', key: 'nombre_fondo', width: 17 },
-        { header: 'Ap Paterno', key: 'ap_paterno', width: 15 },
-        { header: 'Ap Materno.', key: 'ap_materno', width: 15 },
-        { header: 'Nombre Func.', key: 'nombre_func', width: 17 },
-        { header: 'Ficha.', key: 'ficha', width: 17 },
-        { header: 'Rut Func.', key: 'rut_func', width: 17 },
-        { header: 'Liquido.', key: 'liquido', width: 17 },
-        { header: 'Forma Pago.', key: 'forma_pago', width: 17 }
-    ];
+        sheet.columns = [
+            { header: 'Nombre Fondo', key: 'nombre_fondo', width: 17 },
+            { header: 'Ap Paterno', key: 'ap_paterno', width: 15 },
+            { header: 'Ap Materno.', key: 'ap_materno', width: 15 },
+            { header: 'Nombre Func.', key: 'nombre_func', width: 17 },
+            { header: 'Ficha.', key: 'ficha', width: 17 },
+            { header: 'Rut Func.', key: 'rut_func', width: 17 },
+            { header: 'Liquido.', key: 'liquido', width: 17 },
+            { header: 'Forma Pago.', key: 'forma_pago', width: 17 }
+        ];
 
-    sheet.addRow({ nombre_fondo: 1, ap_paterno: 'John Doe', ap_materno: new Date(1970, 1, 1) });
-    const fileName = "Informe.xlsx";
-    workbook.xlsx.writeFile(fileName).then(() => {
-    }).then(() => {
-        const filePath = path.join(__dirname, '../../Informe.xlsx');
-        res.download(filePath);
-    }).catch(() => {
-        console.log("something was wrong");
-    })
-
+        sheet.addRow({ nombre_fondo: 1, ap_paterno: 'John Doe', ap_materno: new Date(1970, 1, 1) });
+        const fileName = "Informe.xlsx";
+        workbook.xlsx.writeFile(fileName).then(() => {
+        }).then(() => {
+            const filePath = path.join(__dirname, '../../Informe.xlsx');
+            res.download(filePath);
+        }).catch(() => {
+            console.log("something was wrong");
+        })
+    } catch (error) {
+        console.log(error);
+        res.send(error);
+    }
 };
 
 ctrl.testQuery = async (req, res) => {

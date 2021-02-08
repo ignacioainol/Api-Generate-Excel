@@ -3,8 +3,10 @@ const { connecting } = require("./connect");
 const getData = async () => {
     const connect = await connecting();
 
+    const querySetSchema = 'set search_path to educacion;';
+    await connect.query(querySetSchema);
+
     const query = `
-            set search_path to educacion;
             select
             nombre_fondo,
             ap_paterno_func,
@@ -29,7 +31,6 @@ const getData = async () => {
 
     const result = await connect.query(query);
     connect.release();
-    console.log(result);
     return result.rows;
 }
 
