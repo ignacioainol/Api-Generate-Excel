@@ -5,11 +5,11 @@ var cors = require('cors');
 app.use(cors());
 
 //config
-app.set('port', 3001);
+const port = 3001 || process.env.PORT;
 
 //rountes
 app.use(require('./routes/index'));
 
-app.listen(app.get('port'), () => {
-    console.log(`Running on port ${app.get("port")}`)
+app.listen(port, () => {
+    console.log(`Running on port ${port}`)
 })
