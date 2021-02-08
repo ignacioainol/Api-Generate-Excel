@@ -3,11 +3,12 @@ const ExcelJS = require('exceljs');
 const path = require('path');
 const dataQuery = require('../models/query');
 
-ctrl.index = (req, res) => {
+ctrl.index = async (req, res) => {
     try {
         const workbook = new ExcelJS.Workbook();
         workbook.creator = 'Iggnaxios Hansen';
         const sheet = workbook.addWorksheet('My Sheet');
+        const allData = await dataQuery.getData();
 
         sheet.columns = [
             { header: 'Nombre Fondo', key: 'nombre_fondo', width: 17 },
@@ -20,7 +21,10 @@ ctrl.index = (req, res) => {
             { header: 'Forma Pago.', key: 'forma_pago', width: 17 }
         ];
 
-        sheet.addRow({ nombre_fondo: 1, ap_paterno: 'John Doe', ap_materno: new Date(1970, 1, 1) });
+        allData.forEach((data) => {
+            sheet.addRow({ nombre_fondo: data.nombre_fondo, ap_paterno: data.ap_paterno_func, ap_materno: data.ap_materno_func, nombre_func: data.nombre_func, ficha: data.ficha, rut_func: data.rut_func, liquido: data.liquido, forma_pago: data.forma_pago });
+        })
+
         const fileName = "Informe.xlsx";
         workbook.xlsx.writeFile(fileName).then(() => {
         }).then(() => {
