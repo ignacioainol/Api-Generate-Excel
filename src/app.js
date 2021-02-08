@@ -5,7 +5,7 @@ var cors = require('cors');
 app.use(cors());
 
 //config
-const port = 3001 || process.env.PORT;
+const port = 3000 || process.env.PORT;
 
 //rountes
 app.use(require('./routes/index'));
